@@ -1,6 +1,6 @@
 import requests as r
 from tkinter import *
-from tkinter import ttk
+from tkinter import ttk, StringVar
 from PIL import Image, ImageTk
 from io import BytesIO
 
@@ -17,10 +17,12 @@ def image_dog_in_tk():
         answer_img = r.get(url_image)
         image = BytesIO(answer_img.content)
         img = Image.open(image)
-        img.thumbnail((500, 350))
+        img.thumbnail((int(width_img.get()), int(height_img.get())))
         img_tk = ImageTk.PhotoImage(img)
-        i_m.config(image=img_tk)
-        i_m.image = img_tk
+        new_win = Toplevel(window)
+        i_o = Label(new_win, image=img_tk)
+        i_o.image = img_tk
+        i_o.pack()
     progress.stop()
 
 
@@ -30,14 +32,9 @@ def func_progress():
     window.after(3000, image_dog_in_tk)
 
 
-get_json_dog()
 window = Tk()
-window.geometry("500x450")
+window.geometry("500x200")
 window.title("Изображения собак")
-
-
-i_m = Label(window)
-i_m.pack(pady=[0,10])
 
 
 btn = Button(window, text="Получить собачку", command=func_progress)
@@ -46,6 +43,18 @@ btn.pack(pady=[0,10])
 
 progress = ttk.Progressbar(mode="determinate", length=400)
 progress.pack()
+
+
+spinbox_var_w = StringVar(value=250)
+spinbox_var_h = StringVar(value=250)
+width_m = Label(window, text="Ширина:")
+width_m.pack()
+width_img = ttk.Spinbox(window, from_=250, to=500, increment=50, textvariable=spinbox_var_w)
+width_img.pack()
+height_m = Label(window, text="Высота:")
+height_m.pack()
+height_img = ttk.Spinbox(window, from_=250, to=500, increment=50, textvariable=spinbox_var_h)
+height_img.pack()
 
 
 window.mainloop()
