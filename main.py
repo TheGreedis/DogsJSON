@@ -19,10 +19,10 @@ def image_dog_in_tk():
         img = Image.open(image)
         img.thumbnail((int(width_img.get()), int(height_img.get())))
         img_tk = ImageTk.PhotoImage(img)
-        new_win = Toplevel(window)
-        i_o = Label(new_win, image=img_tk)
+        i_o = Label(notebook, image=img_tk)
         i_o.image = img_tk
         i_o.pack()
+        notebook.add(i_o, text="Собачка")
     progress.stop()
 
 
@@ -55,6 +55,14 @@ height_m = Label(window, text="Высота:")
 height_m.pack()
 height_img = ttk.Spinbox(window, from_=250, to=500, increment=50, textvariable=spinbox_var_h)
 height_img.pack()
+
+
+new_window = Toplevel(window)
+new_window.geometry("250x200")
+
+
+notebook = ttk.Notebook(new_window)
+notebook.pack()
 
 
 window.mainloop()
